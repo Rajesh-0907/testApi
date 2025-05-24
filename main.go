@@ -1,11 +1,14 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
-	"github.com/gin-gonic/gin"
+	"time"
+
 	"github.com/Rajesh-0907/go-gin-boilerplate/routes"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -19,7 +22,15 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4200", "https://effortless-donut-6c585e.netlify.app/", "http://192.168.1.2:4200"}, // your frontend URLs
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	routes.RegisterRoutes(r)
 
-	log.Fatal(r.Run(":" + port))
+	log.Fatal(r.Run("0.0.0.0:" + port))
 }
