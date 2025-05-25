@@ -23,7 +23,7 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4200", "https://effortless-donut-6c585e.netlify.app/", "http://192.168.1.2:4200"}, // your frontend URLs
+		AllowOrigins:     []string{"http://localhost:4200", "https://effortless-donut-6c585e.netlify.app", "http://192.168.1.2:4200"}, // your frontend URLs
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
