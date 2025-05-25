@@ -3,5 +3,5 @@ services:
     name: go-gin-app
     env: docker
     plan: free
-    dockerfilePath: ./dockerfile
+    dockerfilePath: ./Dockerfile
     autoDeploy: true
