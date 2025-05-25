@@ -1,5 +1,5 @@
 # Use official Go image with exact version
-FROM golang:1.24.3
+FROM golang:1.23
 
 WORKDIR /app
 
