@@ -10,7 +10,7 @@ type AnswerRequest struct {
 	Answers []string `json:"answers"`
 }
 
-func GetScore(c *gin.Context) {
+func GetPpeScore(c *gin.Context) {
 	// var answers []string
 
 	// if err := c.Bind(&answers); err != nil {
