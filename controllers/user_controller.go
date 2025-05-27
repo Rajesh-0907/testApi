@@ -20,6 +20,22 @@ func HomeHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "hello"})
 }
 
+func GetUsername(c *gin.Context) {
+	nameVal, exists := c.Get("name")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "name not found"})
+		return
+	}
+
+	name, ok := nameVal.(string)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid name type"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"name": name})
+}
+
 func RegisterUserHandler(c *gin.Context) {
 	var req models.RegisterRequest
 	if err := c.BindJSON(&req); err != nil {

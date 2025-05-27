@@ -23,7 +23,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		})
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			c.Set("rollno", claims["rollno"])
+			c.Set("name", claims["name"])
 			c.Next()
 		} else {
 			c.AbortWithStatusJSON(401, gin.H{"error": "Invalid token"})
