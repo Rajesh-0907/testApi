@@ -20,20 +20,28 @@ func HomeHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "hello"})
 }
 
-func GetUsername(c *gin.Context) {
-	nameVal, exists := c.Get("name")
-	if !exists {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "name not found"})
+func GetUserInfo(c *gin.Context) {
+	rollnoVal, _ := c.Get("rollno")
+	rollno, _ := rollnoVal.(string)
+	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
+	data, _, err := client.From("students").Select("*", "exact", false).
+		Eq("rollno", rollno).
+		Single().
+		Execute()
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 		return
 	}
-
-	name, ok := nameVal.(string)
-	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "invalid name type"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"name": name})
+	var student models.SupabaseUser
+	json.Unmarshal(data, &student)
+	c.JSON(http.StatusOK, gin.H{
+		"user": gin.H{
+			"name":        student.Name,
+			"isloggedin":  student.Isloggedin,
+			"issubmitted": student.Issubmitted,
+			"score":       student.Score,
+		},
+	})
 }
 
 func RegisterUserHandler(c *gin.Context) {
