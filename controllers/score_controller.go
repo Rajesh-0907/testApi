@@ -2,6 +2,9 @@ package controllers
 
 import (
 	"net/http"
+	"os"
+
+	"github.com/supabase-community/supabase-go"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,17 +12,13 @@ import (
 type AnswerRequest struct {
 	Answers []string `json:"answers"`
 }
+type Student struct {
+	Score int `json:"email"`
+}
 
 func GetPpeScore(c *gin.Context) {
-	// var answers []string
-
-	// if err := c.Bind(&answers); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
-	// 	return
-	// }
-
-	// body, _ := io.ReadAll(c.Request.Body)
-	// fmt.Println("Raw body:", string(body))
+	rollnoVal, _ := c.Get("rollno")
+	rollno, _ := rollnoVal.(string)
 	var req AnswerRequest
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -28,7 +27,6 @@ func GetPpeScore(c *gin.Context) {
 		})
 		return
 	}
-	// // 🧮 Example: Count how many answers match "correct" ones
 	correctAnswers := []string{
 		"150ksc", "45ksc", "38ksc", "hardness", "0.4%", "increases", "Temperature", "Temperature increases",
 	}
@@ -39,6 +37,14 @@ func GetPpeScore(c *gin.Context) {
 			score++
 		}
 	}
-
+	updatedData := map[int]interface{}{
+		score: score,
+	}
+	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
+	// client.From("students").Update()
+	_, _, err := client.From("students").Update(updatedData, "exact", "").Eq("rollno", rollno).Execute()
+	if err != nil {
+		panic(err)
+	}
 	c.JSON(http.StatusOK, score)
 }
