@@ -32,5 +32,5 @@ func main() {
 	}))
 	routes.RegisterRoutes(r)
 
-	log.Fatal(r.Run("0.0.0.0:" + port))
+	log.Fatal(r.Run("127.0.0.1:" + port))
 }

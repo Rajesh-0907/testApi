@@ -12,6 +12,7 @@ func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	r.GET("/", controllers.HomeHandler)
 	api.Use(middlewares.AuthMiddleware())
+	api.Use(middlewares.RateLimitMiddleware())
 	{
 		api.GET("/aptitudequestion", controllers.GetAptitudeQuestions)
 		api.GET("/ppequestion", controllers.GetPpeQuestions)
