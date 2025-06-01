@@ -38,8 +38,10 @@ func GetPpeScore(c *gin.Context) {
 		}
 	}
 	updatedData := map[string]interface{}{
-		"score": score,
+		"score":       score,
+		"issubmitted": true,
 	}
+
 	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
 	// client.From("students").Update()
 	_, _, err := client.From("students").Update(updatedData, "exact", "").Eq("rollno", rollno).Execute()
