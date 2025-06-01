@@ -37,8 +37,8 @@ func GetPpeScore(c *gin.Context) {
 			score++
 		}
 	}
-	updatedData := map[int]interface{}{
-		score: score,
+	updatedData := map[string]interface{}{
+		"score": score,
 	}
 	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
 	// client.From("students").Update()
