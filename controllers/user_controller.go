@@ -20,6 +20,18 @@ func HomeHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "hello"})
 }
 
+func LogoutHandler(c *gin.Context) {
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "auth_token",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+		Secure:   true,
+	})
+	c.JSON(200, gin.H{"message": "Logged out"})
+}
+
 func GetUserInfo(c *gin.Context) {
 	rollnoVal, _ := c.Get("rollno")
 	rollno, _ := rollnoVal.(string)

@@ -18,6 +18,7 @@ func RegisterRoutes(r *gin.Engine) {
 		api.POST("/ppescore", controllers.GetPpeScore)
 		api.POST("/createuser", controllers.RegisterUserHandler)
 		api.GET("/getuserinfo", controllers.GetUserInfo)
+		api.GET("/logoutuser", controllers.LogoutHandler)
 	}
 
 }
