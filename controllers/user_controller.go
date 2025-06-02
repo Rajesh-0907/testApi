@@ -27,6 +27,8 @@ func LogoutHandler(c *gin.Context) {
 		Path:     "/",
 		MaxAge:   -1,
 		HttpOnly: true,
+		SameSite: http.SameSiteNoneMode,
+		Expires:  time.Unix(0, 0),
 		Secure:   true,
 	})
 	c.JSON(200, gin.H{"message": "Logged out"})
