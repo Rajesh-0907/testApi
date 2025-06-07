@@ -35,11 +35,12 @@ func GetTopScore(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err)
 	}
 
-	var students models.SupabaseUser
+	var students []models.SupabaseUser
 	if err := json.Unmarshal(resp, &students); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 
 	}
+
 	c.JSON(http.StatusOK, students)
 }
 
