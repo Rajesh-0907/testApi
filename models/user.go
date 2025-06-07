@@ -19,3 +19,9 @@ type SupabaseUser struct {
 	Isloggedin  bool   `json:"isloggedin"`
 	Issubmitted bool   `json:"issubmitted"`
 }
+
+type TopScore struct {
+	RollNo string `json:"rollno"`
+	Name   string `json:"name"`
+	Score  int    `json:"score"`
+}

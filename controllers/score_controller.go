@@ -24,7 +24,7 @@ func GetTopScore(c *gin.Context) {
 	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
 	resp, _, err := client.
 		From("students").
-		Select("*", "", false).
+		Select("rollno, name, score", "", false).
 		Order("score", &postgrest.OrderOpts{
 			Ascending: false,
 		}). // order by score DESC
@@ -35,7 +35,7 @@ func GetTopScore(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, err)
 	}
 
-	var students []models.SupabaseUser
+	var students []models.TopScore
 	if err := json.Unmarshal(resp, &students); err != nil {
 		c.JSON(http.StatusBadRequest, err)
 
