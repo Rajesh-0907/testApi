@@ -11,6 +11,7 @@ func RegisterRoutes(r *gin.Engine) {
 	auth.POST("/loginuser", controllers.LoginUserHandler)
 	api := r.Group("/api")
 	r.GET("/", controllers.HomeHandler)
+	r.GET("/topscore", controllers.GetTopScore)
 	api.Use(middlewares.AuthMiddleware())
 	r.Use(middlewares.RateLimitMiddleware())
 	{

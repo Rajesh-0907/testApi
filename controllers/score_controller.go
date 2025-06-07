@@ -1,9 +1,13 @@
 package controllers
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 
+	"github.com/Rajesh-0907/go-gin-boilerplate/models"
+
+	"github.com/supabase-community/postgrest-go"
 	"github.com/supabase-community/supabase-go"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +18,29 @@ type AnswerRequest struct {
 }
 type Student struct {
 	Score int `json:"email"`
+}
+
+func GetTopScore(c *gin.Context) {
+	client, _ := supabase.NewClient(os.Getenv("SUPABASE_URL"), os.Getenv("SUPABASE_KEY"), &supabase.ClientOptions{})
+	resp, _, err := client.
+		From("students").
+		Select("*", "", false).
+		Order("score", &postgrest.OrderOpts{
+			Ascending: false,
+		}). // order by score DESC
+		Limit(10, "").
+		Execute()
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+	}
+
+	var students models.SupabaseUser
+	if err := json.Unmarshal(resp, &students); err != nil {
+		c.JSON(http.StatusBadRequest, err)
+
+	}
+	c.JSON(http.StatusOK, students)
 }
 
 func GetPpeScore(c *gin.Context) {
